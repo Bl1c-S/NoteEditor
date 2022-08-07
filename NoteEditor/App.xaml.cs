@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using NoteEditorDomain.Model;
 using System.Windows;
 
 namespace NoteEditor
@@ -13,5 +8,13 @@ namespace NoteEditor
      /// </summary>
      public partial class App : Application
      {
+          protected override void OnStartup(StartupEventArgs e)
+          {
+               string filePath = "c" ;
+               int lineIndex = 1 ;
+               TS_ArgumentsFile argumentsFile = new(lineIndex, filePath);
+
+               base.OnStartup(e);
+          }
      }
 }
