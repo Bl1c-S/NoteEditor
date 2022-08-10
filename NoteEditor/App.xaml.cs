@@ -1,4 +1,4 @@
-﻿using NoteEditorDomain.Model;
+﻿using System.IO;
 using System.Windows;
 
 namespace NoteEditor
@@ -10,9 +10,18 @@ namespace NoteEditor
      {
           protected override void OnStartup(StartupEventArgs e)
           {
-               string filePath = "c" ;
+               string filePath = @"C:\TSNote692";
                int lineIndex = 1 ;
-               TS_ArgumentsFile argumentsFile = new(lineIndex, filePath);
+
+               try
+               {
+                    StreamReader StreamReader = new StreamReader(filePath);
+                    string? line = StreamReader.ReadLine();
+               }
+               catch
+               {
+
+               }
 
                base.OnStartup(e);
           }
