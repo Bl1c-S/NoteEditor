@@ -18,9 +18,9 @@ namespace NoteEditorWPF.Views
      /// <summary>
      /// Interaction logic for NoteEditorForm.xaml
      /// </summary>
-     public partial class NoteEditorForm : UserControl
+     public partial class NoteEditorView : UserControl
      {
-          public NoteEditorForm()
+          public NoteEditorView()
           {
                InitializeComponent();
           }

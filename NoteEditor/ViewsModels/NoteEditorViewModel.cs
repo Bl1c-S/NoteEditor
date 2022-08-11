@@ -1,16 +1,27 @@
-﻿namespace NoteEditorWPF.ViewsModels
+﻿using NoteEditorWPF.Commands;
+using System.Windows.Input;
+
+namespace NoteEditorWPF.ViewsModels
 {
      public class NoteEditorViewModel : ViewModelBase
      {
-          public NoteEditorViewModel(string oldEditableNote) =>_oldEditableNote = oldEditableNote;
+          public NoteEditorViewModel(string oldEditableNote)
+          {
+               _oldEditableNote = oldEditableNote;
+               SaveChangedButton = new SaveChangedCommand();
+          }
 
           private string _oldEditableNote;
           public string OldEditableNote
           {
-               get { return _oldEditableNote; }
+               get
+               {
+                    return _oldEditableNote;
+               }
           }
-          private int _updateEditableNote;
-          public int UpdateEditableNote
+
+          private string _updateEditableNote;
+          public string UpdateEditableNote
           {
                set
                {
@@ -18,18 +29,6 @@
                     OnPropertyChanged(nameof(UpdateEditableNote));
                }
           }
-          //private int myVar;
-          //public int MyProperty
-          //{
-          //     get
-          //     {
-          //          return myVar;
-          //     }
-          //     set
-          //     {
-          //          myVar = value;
-          //          OnPropertyChanged(nameof(MyProperty));
-          //     }
-          //}
+          public ICommand SaveChangedButton { get; }
      }
 }
