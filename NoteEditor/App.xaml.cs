@@ -1,4 +1,6 @@
-﻿using NoteEditorWPF.ViewsModels;
+﻿using NoteEditorDomain.Model;
+using NoteEditorWPF.Views;
+using NoteEditorWPF.ViewsModels;
 using System;
 using System.IO;
 using System.Windows;
@@ -13,17 +15,20 @@ namespace NoteEditor
           protected override void OnStartup(StartupEventArgs e)
           {
                string filePath = @"C:\TSNote692.txt";
-               int lineIndex = 1;
+               int lineIndex = 5;
+               TSargument txtFile = new(filePath, lineIndex);
 
-               try
-               {
-                    StreamReader TxtReader = new StreamReader(filePath);
-                         string line = TxtReader.ReadLine();
-                         NoteEditorViewModel NoteEditor = new(line);
-               }
-               catch { MessageBox.Show("Eror: Read file path"); }
+               MainWindowVM mainVM = new();
+               NoteEditedVM noteEditorView = new(txtFile);
+
+               MainWindow main = new();
+               NoteEditedView noteEdited = new();
+
+               main.DataContext = noteEditorView;
+               noteEdited.DataContext = noteEditorView;
+               main.Show();
 
                base.OnStartup(e);
-               }
-               }
           }
+     }
+}

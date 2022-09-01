@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NoteEditorDomain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +8,20 @@ using System.Windows.Input;
 
 namespace NoteEditorWPF.Commands
 {
-     internal class SaveChangedCommand : CommandBase
+     public class SaveChangedCommand : CommandBase
      {
+          private readonly TSargument _tsargument;
+          private string _updateNote;
+
+          public SaveChangedCommand(TSargument tsargument, string updateNote)
+          {
+               _tsargument = tsargument;
+               _updateNote = updateNote;
+          }
+
           public override void Execute(object? parameter)
           {
-               throw new NotImplementedException();
+               _tsargument.SaveChanged(_updateNote);
           }
      }
 }

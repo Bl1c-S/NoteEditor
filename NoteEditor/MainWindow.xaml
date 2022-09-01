@@ -9,6 +9,6 @@
         MaxHeight="720" MinHeight="300"
         MaxWidth="1280" MinWidth="450">
     <Grid Margin="10 5">
-        <views:NoteEditorView/>
+        <views:NoteEditedView/>
     </Grid>
 </Window>
