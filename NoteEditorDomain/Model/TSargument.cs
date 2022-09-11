@@ -16,26 +16,32 @@ namespace NoteEditorDomain.Model
           {
                _filePath = filePath;
                _lineIndex = lineIndex;
-               ReadText();
+               EditebleNote = ReadText();
           }
-          public void ReadText()
+          public string ReadText()
           {
                string[] lines = File.ReadAllLines(_filePath);
-               bool readToNext = true;
+               bool readToNextLine = true;
 
-               for (int lineIndexNow = 0; lineIndexNow <= lines.Length; lineIndexNow++)
+               string returnVelue = lines[_lineIndex];
+
+               for (int lineIndexNow = _lineIndex + 1; readToNextLine; ++lineIndexNow)
                {
-                    foreach (string line in lines)
-                    {
-                         if (line.Contains("-") || line.Contains("+") || line.Contains("["))
-                              readToNext = false;
+                    string line;
+                    try { line = lines[lineIndexNow]; }
+                    catch { line = null!; }
 
-                         if (lineIndexNow >= _lineIndex && readToNext)
-                              EditebleNote = EditebleNote + $"\n{line}";
+                    if (line.Contains("-") || line.Contains("+") || line.Contains("[") || string.IsNullOrEmpty(line))
+                    {
+                         readToNextLine = false;
                     }
-                    if (EditebleNote == null)
-                         EditebleNote = "eror find";
+                    else
+                    {
+                         returnVelue += $"\n{line}";
+                         readToNextLine = true;
+                    }
                }
+               return returnVelue;
           }
           public void SaveChanged(string updateNote)
           {
