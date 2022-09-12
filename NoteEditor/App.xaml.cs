@@ -1,8 +1,6 @@
 ﻿using NoteEditorDomain.Model;
 using NoteEditorWPF.Views;
 using NoteEditorWPF.ViewsModels;
-using System;
-using System.IO;
 using System.Windows;
 
 namespace NoteEditor
@@ -16,16 +14,9 @@ namespace NoteEditor
           {
                string filePath = @"C:\TSNote692.txt";
                int lineIndex = 5;
-               TSargument txtFile = new(filePath, lineIndex);
-
-               MainWindowVM mainVM = new();
-               NoteEditedVM noteEditorView = new(txtFile);
 
                MainWindow main = new();
-               NoteEditedView noteEdited = new();
-
-               main.DataContext = noteEditorView;
-               noteEdited.DataContext = noteEditorView;
+               main.DataContext = new NoteEditedVM(new TSargument(filePath, lineIndex));
                main.Show();
 
                base.OnStartup(e);
