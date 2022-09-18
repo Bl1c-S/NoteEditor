@@ -5,9 +5,7 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteEditorWPF", "NoteEditor\NoteEditorWPF.csproj", "{6E263AFD-B2A2-4F1E-B47D-1D213E874867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteEditorBusinessLogic", "NoteEditorBusinessLogic\NoteEditorBusinessLogic.csproj", "{8AF987BE-C6B6-4852-8AA7-73DF6784B382}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteEditorDomain", "NoteEditorDomain\NoteEditorDomain.csproj", "{0EEF8E23-0D49-41A1-981D-A36C71364677}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteEditorDomain", "NoteEditorDomain\NoteEditorDomain.csproj", "{0EEF8E23-0D49-41A1-981D-A36C71364677}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{6E263AFD-B2A2-4F1E-B47D-1D213E874867}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E263AFD-B2A2-4F1E-B47D-1D213E874867}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E263AFD-B2A2-4F1E-B47D-1D213E874867}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF987BE-C6B6-4852-8AA7-73DF6784B382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF987BE-C6B6-4852-8AA7-73DF6784B382}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF987BE-C6B6-4852-8AA7-73DF6784B382}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF987BE-C6B6-4852-8AA7-73DF6784B382}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EEF8E23-0D49-41A1-981D-A36C71364677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0EEF8E23-0D49-41A1-981D-A36C71364677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EEF8E23-0D49-41A1-981D-A36C71364677}.Release|Any CPU.ActiveCfg = Release|Any CPU

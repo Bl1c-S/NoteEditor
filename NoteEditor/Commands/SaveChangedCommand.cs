@@ -6,22 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace NoteEditorWPF.Commands
+namespace NoteEditorWPF.Commands;
+
+public class SaveChangedCommand : CommandBase
 {
-     public class SaveChangedCommand : CommandBase
+     private readonly TSargument _tsargument;
+
+     public SaveChangedCommand(TSargument tsargument)
      {
-          private readonly TSargument _tsargument;
-          private string _updateNote;
+          _tsargument = tsargument;
+     }
 
-          public SaveChangedCommand(TSargument tsargument, string updateNote)
-          {
-               _tsargument = tsargument;
-               _updateNote = updateNote;
-          }
-
-          public override void Execute(object? parameter)
-          {
-               _tsargument.SaveChanged(_updateNote);
-          }
+     public override void Execute(object? parameter)
+     {
+          _tsargument.SaveChanged("");
      }
 }

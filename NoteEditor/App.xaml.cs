@@ -3,23 +3,22 @@ using NoteEditorWPF.Views;
 using NoteEditorWPF.ViewsModels;
 using System.Windows;
 
-namespace NoteEditor
+namespace NoteEditor;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-     /// <summary>
-     /// Interaction logic for App.xaml
-     /// </summary>
-     public partial class App : Application
+     protected override void OnStartup(StartupEventArgs e)
      {
-          protected override void OnStartup(StartupEventArgs e)
-          {
-               string filePath = @"C:\TSNote692.txt";
-               int lineIndex = 5;
+          string filePath = @"C:\TSNote692.txt";
+          int lineIndex = 5;
 
-               MainWindow main = new();
-               main.DataContext = new NoteEditedVM(new TSargument(filePath, lineIndex));
-               main.Show();
+          MainWindow main = new();
+          main.DataContext = new NoteEditedVM(new TSargument(filePath, lineIndex));
+          main.Show();
 
-               base.OnStartup(e);
-          }
+          base.OnStartup(e);
      }
 }

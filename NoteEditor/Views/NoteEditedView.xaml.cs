@@ -4,16 +4,15 @@ using NoteEditorWPF.ViewsModels;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace NoteEditorWPF.Views
+namespace NoteEditorWPF.Views;
+
+/// <summary>
+/// Interaction logic for NoteEditorForm.xaml
+/// </summary>
+public partial class NoteEditedView : UserControl
 {
-     /// <summary>
-     /// Interaction logic for NoteEditorForm.xaml
-     /// </summary>
-     public partial class NoteEditedView : UserControl
+     public NoteEditedView()
      {
-          public NoteEditedView()
-          {
-               InitializeComponent();
-          }
+          InitializeComponent();
      }
 }

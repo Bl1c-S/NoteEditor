@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoteEditorWPF.ViewsModels
-{
-     public class MainWindowVM
-     {
+namespace NoteEditorWPF.ViewsModels;
 
-     }
+public class MainWindowVM
+{
+
 }

@@ -1,54 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace NoteEditorDomain.Model;
 
-namespace NoteEditorDomain.Model
+public class TSargument
 {
-     public class TSargument
+     private readonly string[] _textAllLines;
+     private readonly int _lineIndex;
+     private string _oldEditableText;
+     private string _filePath;
+
+     public TSargument(string filePath, int lineIndex)
      {
-          private string _filePath { get; set; }
-          private int _lineIndex { get; set; }
+          _lineIndex = lineIndex;
+          _textAllLines = File.ReadAllLines(filePath);
+          _filePath = filePath;
+     }
 
-          public TSargument(string filePath, int lineIndex)
-          {
-               _filePath = filePath;
-               _lineIndex = lineIndex;
-          }
-          public string ReadText()
-          {
-               string[] textAllLines = File.ReadAllLines(_filePath);
-               string resultText;
+     private string[] ReplaceText(string changedText)
+     {
+          List<string> textListLines = new(_textAllLines);
+          textListLines.RemoveRange(_lineIndex, _oldEditableText.Split().Length);
 
-               try
+          textListLines.InsertRange(_lineIndex, new string[] { changedText });
+          return textListLines.ToArray();
+     }
+
+     public string ReadTextInNote()
+     {
+          string resultText;
+
+          try { resultText = _textAllLines[_lineIndex]; }
+          catch { return null!; }
+
+          bool readToNextLine = true;
+          for (int lineIndexNow = _lineIndex + 1; readToNextLine; ++lineIndexNow)
+          {
+               string line;
+               try { line = _textAllLines[lineIndexNow]; }
+               catch { return resultText; }
+
+               if (string.IsNullOrEmpty(line) || line.StartsWith("-") || line.StartsWith("+") || line.StartsWith("["))
+                    readToNextLine = false;
+               else
                {
-                    resultText = textAllLines[_lineIndex];
-                    resultText = resultText.TrimStart('-', '+', '[', ' ');
+                    resultText += $"\n{line}";
+                    readToNextLine = true;
                }
-               catch { return null!; }
-
-               bool readToNextLine = true;
-               for (int lineIndexNow = _lineIndex + 1; readToNextLine; ++lineIndexNow)
-               {
-                    string line;
-                    try { line = textAllLines[lineIndexNow]; }
-                    catch { return resultText; }
-
-                    if (string.IsNullOrEmpty(line) || line.Contains("-") || line.Contains("+") || line.Contains("["))
-                    {
-                         readToNextLine = false;
-                    }
-                    else
-                    {
-                         resultText += $"\n{line}";
-                         readToNextLine = true;
-                    }
-               }
-               return resultText;
           }
-          public void SaveChanged(string updateNote)
-          {
-          }
+          _oldEditableText = resultText;
+          resultText = resultText.TrimStart('-', '+', '[', ' ');
+
+          return resultText;
+     }
+
+     public void SaveChanged(string changedNote)
+     {
+          File.WriteAllLinesAsync(_filePath, ReplaceText(changedNote));
      }
 }

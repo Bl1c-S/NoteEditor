@@ -5,21 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace NoteEditorWPF.Commands
+namespace NoteEditorWPF.Commands;
+
+public abstract class CommandBase : ICommand
 {
-     public abstract class CommandBase : ICommand
+     public event EventHandler? CanExecuteChanged;
+
+     public virtual bool CanExecute(object? parameter)
      {
-          public event EventHandler? CanExecuteChanged;
+          return true;
+     }
 
-          public virtual bool CanExecute(object? parameter)
-          {
-               return true;
-          }
-
-          public abstract void Execute(object? parameter);
-          protected void OnCanExecutedChanged()
-          {
-               CanExecuteChanged?.Invoke(this, new EventArgs());
-          }
+     public abstract void Execute(object? parameter);
+     protected void OnCanExecutedChanged()
+     {
+          CanExecuteChanged?.Invoke(this, new EventArgs());
      }
 }
