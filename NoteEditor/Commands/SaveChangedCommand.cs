@@ -1,24 +1,26 @@
 ﻿using NoteEditorDomain.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace NoteEditorWPF.Commands;
 
 public class SaveChangedCommand : CommandBase
 {
-     private readonly TSargument _tsargument;
+     private Action<object> execute;
+     private Func<object, bool> _canExecute;
+     private readonly NoteService _tsargument;
+     private string _changedNote { get; set; }
 
-     public SaveChangedCommand(TSargument tsargument)
+     public SaveChangedCommand(Action<object> execute, Func<object, bool> canExecute = null)
      {
-          _tsargument = tsargument;
+          this.execute = execute;
+          this._canExecute = canExecute;
      }
-
-     public override void Execute(object? parameter)
+     public override bool CanExecute(object? parameter)
      {
-          _tsargument.SaveChanged("");
+          return this._canExecute == null || this._canExecute(parameter);
+     }
+     public override void Execute(object parameter)
+     {
+          this.execute(parameter);
      }
 }

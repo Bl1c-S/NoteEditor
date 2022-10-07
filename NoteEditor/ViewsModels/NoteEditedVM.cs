@@ -5,15 +5,15 @@ using System.Windows.Input;
 
 namespace NoteEditorWPF.ViewsModels;
 
-internal class NoteEditedVM : ViewModelBase
+public class NoteEditedVM : ViewModelBase
 {
+     private NoteService _tsArgument;
      private string _changedNote;
      private string _editableNote;
-     public ICommand SaveChangedButton { get; set; }
-     public NoteEditedVM(TSargument tsArgument)
+     public NoteEditedVM(NoteService tsArgument)
      {
-          SaveChangedButton = new SaveChangedCommand(tsArgument);
-          _editableNote = tsArgument.ReadTextInNote();
+          _tsArgument = tsArgument;
+          _editableNote = tsArgument.ReadFormatNote();
      }
      public string EditableNote
      {
@@ -21,7 +21,17 @@ internal class NoteEditedVM : ViewModelBase
           set
           {
                _changedNote = value;
-               OnPropertyChanged(EditableNote);
+               //OnPropertyChanged(EditableNote);
+          }
+     }
+     public ICommand SaveChangedButton
+     {
+          get
+          {
+               return new SaveChangedCommand(obj =>
+               {
+                    _tsArgument.SaveChanged(_changedNote);
+               });
           }
      }
      private string CheckText()

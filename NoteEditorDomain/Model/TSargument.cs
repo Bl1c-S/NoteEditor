@@ -1,33 +1,27 @@
 ﻿namespace NoteEditorDomain.Model;
 
-public class TSargument
+public class NoteService
 {
      private readonly string[] _textAllLines;
      private readonly int _lineIndex;
-     private string _oldEditableText;
-     private string _filePath;
+     private readonly string _filePath;
+     private string _oldEditableNote;
 
-     public TSargument(string filePath, int lineIndex)
+     public NoteService(string filePath, int lineIndex)
      {
           _lineIndex = lineIndex;
           _textAllLines = File.ReadAllLines(filePath);
           _filePath = filePath;
      }
 
-     private string[] ReplaceText(string changedText)
+     #region ReadMethods
+     public string ReadFormatNote() => ReadNote().TrimStart('-', '+', '[', ' ');
+
+     private string ReadNote()
      {
-          List<string> textListLines = new(_textAllLines);
-          textListLines.RemoveRange(_lineIndex, _oldEditableText.Split().Length);
+          string resultNote;
 
-          textListLines.InsertRange(_lineIndex, new string[] { changedText });
-          return textListLines.ToArray();
-     }
-
-     public string ReadTextInNote()
-     {
-          string resultText;
-
-          try { resultText = _textAllLines[_lineIndex]; }
+          try { resultNote = _textAllLines[_lineIndex]; }
           catch { return null!; }
 
           bool readToNextLine = true;
@@ -35,24 +29,39 @@ public class TSargument
           {
                string line;
                try { line = _textAllLines[lineIndexNow]; }
-               catch { return resultText; }
+               catch { return resultNote; }
 
                if (string.IsNullOrEmpty(line) || line.StartsWith("-") || line.StartsWith("+") || line.StartsWith("["))
                     readToNextLine = false;
                else
                {
-                    resultText += $"\n{line}";
+                    resultNote += $"\n{line}";
                     readToNextLine = true;
                }
           }
-          _oldEditableText = resultText;
-          resultText = resultText.TrimStart('-', '+', '[', ' ');
+          return resultNote;
+     }
+     #endregion
 
-          return resultText;
+     #region SaveMethods
+     private string[] ReplaceText(string changedText)
+     {
+          string oldNote = ReadNote();
+          List<string> textListLines = new(_textAllLines);
+          textListLines.RemoveRange(_lineIndex, oldNote.Split().Length - 1);
+
+          if (oldNote.StartsWith("-"))
+               changedText = string.Concat("-", changedText);
+          if (oldNote.StartsWith("+"))
+               changedText = string.Concat("+", changedText);
+
+          textListLines.InsertRange(_lineIndex, new string[] { changedText });
+          return textListLines.ToArray();
      }
 
      public void SaveChanged(string changedNote)
      {
           File.WriteAllLinesAsync(_filePath, ReplaceText(changedNote));
      }
+     #endregion
 }

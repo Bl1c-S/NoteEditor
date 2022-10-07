@@ -16,7 +16,7 @@ public partial class App : Application
           int lineIndex = 5;
 
           MainWindow main = new();
-          main.DataContext = new NoteEditedVM(new TSargument(filePath, lineIndex));
+          main.DataContext = new NoteEditedVM(new NoteService(filePath, lineIndex));
           main.Show();
 
           base.OnStartup(e);

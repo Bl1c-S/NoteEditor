@@ -13,7 +13,7 @@ public abstract class CommandBase : ICommand
 
      public virtual bool CanExecute(object? parameter)
      {
-          return true;
+          return false;
      }
 
      public abstract void Execute(object? parameter);
