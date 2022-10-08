@@ -19,20 +19,27 @@
 
             <TextBlock
                 Grid.Row="0"
-                Text="New text"
+                Text="Editing form"
                 Margin="7 1"
                 FontSize="20"/>
 
             <TextBox
                 Grid.Row="1"
-                Text="{Binding EditableNote,Mode=TwoWay}"
                 Padding="2"
-                Margin="7"/>
+                Margin="7"
+                Text="{Binding EditableNote,Mode=TwoWay}"
+                
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility ="Auto"
+                />
         </Grid>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin=" 5" Orientation="Horizontal">
-            <Button Command="{Binding SaveChangedButton}" Content="Save" Padding="10 2"/>
-            <Button Content="Cancel" Padding="5" Margin="5 0 0 0"/>
+            <Button Command="{Binding SaveChangedButton}"
+                    Content="Save" Padding="10 2"/>
+            <Button Command="{Binding CancelButton}"
+                    Content="Cancel" Padding="5" Margin="5 0 0 0"/>
         </StackPanel>
 
     </Grid>

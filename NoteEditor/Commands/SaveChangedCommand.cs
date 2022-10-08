@@ -3,14 +3,12 @@ using System;
 
 namespace NoteEditorWPF.Commands;
 
-public class SaveChangedCommand : CommandBase
+public class ExecuteCommand : CommandBase
 {
      private Action<object> execute;
      private Func<object, bool> _canExecute;
-     private readonly NoteService _tsargument;
-     private string _changedNote { get; set; }
 
-     public SaveChangedCommand(Action<object> execute, Func<object, bool> canExecute = null)
+     public ExecuteCommand(Action<object> execute, Func<object, bool> canExecute = null)
      {
           this.execute = execute;
           this._canExecute = canExecute;

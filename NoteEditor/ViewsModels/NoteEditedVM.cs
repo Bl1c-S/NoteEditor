@@ -1,5 +1,7 @@
 ﻿using NoteEditorDomain.Model;
 using NoteEditorWPF.Commands;
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,18 +23,16 @@ public class NoteEditedVM : ViewModelBase
           set
           {
                _changedNote = value;
-               //OnPropertyChanged(EditableNote);
+               OnPropertyChanged(EditableNote);
           }
      }
      public ICommand SaveChangedButton
      {
-          get
-          {
-               return new SaveChangedCommand(obj =>
-               {
-                    _tsArgument.SaveChanged(_changedNote);
-               });
-          }
+          get => new ExecuteCommand(obj => { _tsArgument.SaveChanged(_changedNote); });
+     }
+     public ICommand CancelButton
+     {
+          get => new ExecuteCommand(obj => { Process.GetCurrentProcess().Kill(); });
      }
      private string CheckText()
      {
