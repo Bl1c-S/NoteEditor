@@ -5,7 +5,6 @@ public class NoteService
      private readonly string[] _textAllLines;
      private readonly int _lineIndex;
      private readonly string _filePath;
-     private string _oldEditableNote;
 
      public NoteService(string filePath, int lineIndex)
      {
@@ -48,7 +47,7 @@ public class NoteService
      {
           string oldNote = ReadNote();
           List<string> textListLines = new(_textAllLines);
-          textListLines.RemoveRange(_lineIndex, oldNote.Split().Length - 1);
+          textListLines.RemoveRange(_lineIndex, changedText.Split("\n").Length);
 
           if (oldNote.StartsWith("-"))
                changedText = string.Concat("-", changedText);
