@@ -12,8 +12,8 @@ public partial class App : Application
 {
      protected override void OnStartup(StartupEventArgs e)
      {
-          string filePath = @"C:\TSNote692.txt";
-          int lineIndex = 5;
+          string filePath = @"X:\TSNote692.txt";
+          int lineIndex = 17;
 
           MainWindow main = new();
           main.DataContext = new NoteEditedVM(new NoteService(filePath, lineIndex));

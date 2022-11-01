@@ -14,7 +14,7 @@ public class NoteService
      }
 
      #region ReadMethods
-     public string ReadFormatNote() => ReadNote().TrimStart('-', '+', '[', ' ');
+     public string ReadUnFormatNote() => ReadNote().TrimStart('-', '+', '[', ' ');
 
      private string ReadNote()
      {
@@ -43,24 +43,40 @@ public class NoteService
      #endregion
 
      #region SaveMethods
-     private string[] ReplaceText(string changedText)
+     private string BeackUpFormatNote(string changedText)
      {
           string oldNote = ReadNote();
-          List<string> textListLines = new(_textAllLines);
-          textListLines.RemoveRange(_lineIndex, changedText.Split("\n").Length);
 
-          if (oldNote.StartsWith("-"))
-               changedText = string.Concat("-", changedText);
           if (oldNote.StartsWith("+"))
-               changedText = string.Concat("+", changedText);
+               return changedText = string.Concat("+", changedText);
+          else
+               return changedText = string.Concat("-", changedText);
+     }
 
-          textListLines.InsertRange(_lineIndex, new string[] { changedText });
-          return textListLines.ToArray();
+     public string[] InsertInside(string changedNote)
+     {
+          int NumbLN = ReadNote().Split('\n').Length; // number of lines in the old note
+
+          List<string> allTextList = new(_textAllLines);
+
+          List<string> firstRange = new(allTextList.GetRange(0, _lineIndex));
+
+          List<string> finalText = new(firstRange);
+
+          List<string> correctedChangedNote = new();
+
+          foreach (string line in changedNote.Split("\n"))
+               correctedChangedNote.Add(line.TrimEnd('\r'));
+
+          finalText.AddRange(correctedChangedNote);
+          finalText.AddRange(allTextList.GetRange(firstRange.Count + NumbLN, _textAllLines.Length - firstRange.Count - NumbLN));
+
+          return finalText.ToArray();
      }
 
      public void SaveChanged(string changedNote)
      {
-          File.WriteAllLinesAsync(_filePath, ReplaceText(changedNote));
+          File.WriteAllLinesAsync(_filePath, InsertInside(BeackUpFormatNote(changedNote)));
      }
      #endregion
 }

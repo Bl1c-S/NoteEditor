@@ -10,36 +10,36 @@ namespace NoteEditorWPF.ViewsModels;
 public class NoteEditedVM : ViewModelBase
 {
      private NoteService _tsArgument;
-     private string _changedNote;
      private string _editableNote;
      public NoteEditedVM(NoteService tsArgument)
      {
           _tsArgument = tsArgument;
-          _editableNote = tsArgument.ReadFormatNote();
+          _editableNote = tsArgument.ReadUnFormatNote();
+          CheckText();
      }
      public string EditableNote
      {
-          get { return CheckText(); }
+          get { return _editableNote; }
           set
           {
-               _changedNote = value;
+               _editableNote = value;
                OnPropertyChanged(EditableNote);
           }
      }
      public ICommand SaveChangedButton
      {
-          get => new ExecuteCommand(obj => { _tsArgument.SaveChanged(_changedNote); });
+          get => new ExecuteCommand(obj => { _tsArgument.SaveChanged(_editableNote); });
      }
      public ICommand CancelButton
      {
           get => new ExecuteCommand(obj => { Process.GetCurrentProcess().Kill(); });
      }
-     private string CheckText()
+     private void CheckText()
      {
-          if (_editableNote != null)
-               return _editableNote;
-
-          MessageBox.Show("Dont can find text");
-          return null!;
+          if (_editableNote == null)
+          {
+               MessageBox.Show("Dont can find text");
+               Process.GetCurrentProcess().Kill();
+          }
      }
 }
