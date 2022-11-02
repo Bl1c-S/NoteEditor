@@ -8,25 +8,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="0.15*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock
-                Grid.Row="0"
-                Text="Editing form"
-                Margin="7 1"
-                FontSize="20"/>
 
             <TextBox
                 Grid.Row="1"
                 Padding="2"
-                Margin="7"
+                Margin="5"
                 Text="{Binding EditableNote,Mode=TwoWay}"
                 
                 AcceptsReturn="True"
@@ -35,11 +25,11 @@
                 />
         </Grid>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin=" 5" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin=" 5 3" Orientation="Horizontal">
             <Button Command="{Binding SaveChangedButton}"
-                    Content="Save" Padding="10 2"/>
+                    Content="Save" Padding="5 0"/>
             <Button Command="{Binding CancelButton}"
-                    Content="Cancel" Padding="5" Margin="5 0 0 0"/>
+                    Content="Cancel" Padding="5 0" Margin="5 0 0 0"/>
         </StackPanel>
 
     </Grid>
