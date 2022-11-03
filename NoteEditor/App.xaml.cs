@@ -1,6 +1,7 @@
 ﻿using NoteEditorDomain.Model;
-using NoteEditorWPF.Views;
+
 using NoteEditorWPF.ViewsModels;
+
 using System.Windows;
 
 namespace NoteEditor;
@@ -10,15 +11,18 @@ namespace NoteEditor;
 /// </summary>
 public partial class App : Application
 {
-     protected override void OnStartup(StartupEventArgs e)
-     {
-          string filePath = @"X:\TSNote692.txt";
-          int lineIndex = 17;
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        string filePath = @"C:\TSNote692.txt"; 
+        
+        int lineIndex = 17;
 
-          MainWindow main = new();
-          main.DataContext = new NoteEditedVM(new NoteService(filePath, lineIndex));
-          main.Show();
+        MainWindow main = new()
+        {
+            DataContext = new NoteEditedVM(new NoteService(filePath, lineIndex))
+        };
+        main.Show();
 
-          base.OnStartup(e);
-     }
+        base.OnStartup(e);
+    }
 }

@@ -14,9 +14,9 @@ public class NoteService
      }
 
      #region ReadMethods
-     public string ReadUnFormatNote() => ReadNote().TrimStart('-', '+', '[', ' ');
+     public string ReadUnFormatNote() => ReadNoteFromLineIndex().TrimStart('-', '+', '[', ' ');
 
-     private string ReadNote()
+     private string ReadNoteFromLineIndex()
      {
           string resultNote;
 
@@ -45,7 +45,7 @@ public class NoteService
      #region SaveMethods
      private string BeackUpFormatNote(string changedText)
      {
-          string oldNote = ReadNote();
+          string oldNote = ReadNoteFromLineIndex();
 
           if (oldNote.StartsWith("+"))
                return changedText = string.Concat("+", changedText);
@@ -55,7 +55,8 @@ public class NoteService
 
      public string[] InsertInside(string changedNote)
      {
-          int NumbLN = ReadNote().Split('\n').Length; // number of lines in the old note
+        string note = ReadNoteFromLineIndex();
+        int numbLN = note.Split('\n').Length; // number of lines in the old note
 
           List<string> allTextList = new(_textAllLines);
 
@@ -64,19 +65,21 @@ public class NoteService
           List<string> finalText = new(firstRange);
 
           List<string> correctedChangedNote = new();
-
+         
           foreach (string line in changedNote.Split("\n"))
                correctedChangedNote.Add(line.TrimEnd('\r'));
 
           finalText.AddRange(correctedChangedNote);
-          finalText.AddRange(allTextList.GetRange(firstRange.Count + NumbLN, _textAllLines.Length - firstRange.Count - NumbLN));
+          finalText.AddRange(allTextList.GetRange(firstRange.Count + numbLN, _textAllLines.Length - firstRange.Count - numbLN));
 
           return finalText.ToArray();
      }
 
      public void SaveChanged(string changedNote)
      {
-          File.WriteAllLinesAsync(_filePath, InsertInside(BeackUpFormatNote(changedNote)));
+        string returnFormatNote = BeackUpFormatNote(changedNote);
+        string[] restoredText = InsertInside(returnFormatNote);
+        File.WriteAllLinesAsync(_filePath, restoredText);
      }
      #endregion
 }
