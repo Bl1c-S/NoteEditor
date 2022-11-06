@@ -1,21 +1,21 @@
-﻿using NoteEditorDomain.Model;
+﻿using NoteEditorDomain;
 using NoteEditorWPF.Commands;
-using System;
 using System.Diagnostics;
-using System.Windows;
+using System.IO;
 using System.Windows.Input;
 
 namespace NoteEditorWPF.ViewsModels;
 
 public class NoteEditedVM : ViewModelBase
 {
-     private NoteService _tsArgument;
+     private NoteLogic _noteLogic;
      private string _editableNote;
-     public NoteEditedVM(NoteService tsArgument)
+     private string _filePath;
+     public NoteEditedVM(NoteLogic noteLogic, string filePath)
      {
-          _tsArgument = tsArgument;
-          _editableNote = tsArgument.ReadUnFormatNote();
-          CheckText();
+          _noteLogic = noteLogic;
+          _editableNote = noteLogic.GetUnFormatNote();
+          _filePath = filePath;
      }
      public string EditableNote
      {
@@ -28,18 +28,13 @@ public class NoteEditedVM : ViewModelBase
      }
      public ICommand SaveChangedButton
      {
-          get => new ExecuteCommand(obj => { _tsArgument.SaveChanged(_editableNote); });
+          get => new ExecuteCommand(obj => {
+               string[] changedText = _noteLogic.InsertInside(_editableNote);
+               File.WriteAllLinesAsync(_filePath, changedText);
+          });
      }
      public ICommand CancelButton
      {
           get => new ExecuteCommand(obj => { Process.GetCurrentProcess().Kill(); });
-     }
-     private void CheckText()
-     {
-          if (_editableNote == null)
-          {
-               MessageBox.Show("Dont can find text");
-               Process.GetCurrentProcess().Kill();
-          }
      }
 }

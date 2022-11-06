@@ -1,44 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
-namespace NoteEditorDomain.Model
+namespace NoteEditorDomain;
+public class NoteLogic
 {
-    public class NoteLogic
-    {
-        private char[] startOfTextChars = new char[] { '-', '+', '['};
-        public (string note, int endIndex) GetNoteInfo(string[] lines, int lineIndex)
-        {
-            if (lineIndex > lines.Length - 1 || lineIndex < 0)
-                throw new IndexOutOfRangeException();
+     private readonly char[] _endNoteAttribute;
+     private readonly int _lineIndex;
+     private readonly string[] _text;
+     private readonly string _oldNote;
 
-            var sb = new StringBuilder();
+     public NoteLogic(string[] text, int lineIndex)
+     {
+          _endNoteAttribute = new char[] { '+', '-', '[' };
+          _lineIndex = lineIndex;
+          _text = text;
+          _oldNote = GetNote().TrimEnd('\n','\r');
+     }
 
-            for (int i = lineIndex; i < lines.Length; i++)
-            {
-                string line = lines[i];
-                bool isNewText = IsNewText(line);
+     public string GetUnFormatNote() => _oldNote.TrimStart(_endNoteAttribute);
 
-                if (isNewText)
-                    return (sb.ToString(), i);
-                else
-                    sb.AppendLine(line);
-            }
+     private List<string> GetFormatNote(string changedNote)
+     {
+          StringBuilder sb;
+          if (_oldNote.StartsWith("+"))
+               sb = new($"+{changedNote}");
+          else if (_oldNote.StartsWith("-"))
+               sb = new($"-{changedNote}");
+          else
+               sb = new(changedNote);
 
-            return (string.Empty, -1);
-        }
+          List<string> formattedChangedNote = new();
 
-        public bool IsNewText(string line)
-        {
-            if (string.IsNullOrEmpty(line))
-                return false;
+          foreach (string line in sb.ToString().Split("\n"))
+               formattedChangedNote.Add(line.TrimEnd('\r'));
 
-            char first = line[0];
-            bool resul = startOfTextChars.Contains(first);
-            return resul;
-        }
-    }
+          return formattedChangedNote;
+     }
+
+     private string GetNote()
+     {
+          if (_lineIndex >= _text.Length)
+               throw new ArgumentOutOfRangeException();
+
+          StringBuilder sb = new(_text[_lineIndex]);
+
+          for (int i = _lineIndex + 1; i < _text.Length; i++)
+          {
+               string line = _text[i];
+
+               foreach (var endchar in _endNoteAttribute)
+               {
+                    if (line.StartsWith(endchar))
+                         return sb.ToString();
+               }
+               sb.AppendLine($"\n{line}");
+          }
+          return sb.ToString();
+     }
+
+     public string[] InsertInside(string changedNote)
+     {
+          List<string> allTextList = new(_text);
+          List<string> finalText = new(allTextList.GetRange(0, _lineIndex));
+
+          List<string> formattedChangedNote = GetFormatNote(changedNote);
+          finalText.AddRange(formattedChangedNote);
+
+          int endOfNoteIndex = _lineIndex + _oldNote.Split("\n").Length;
+          int countLineOfEndRange = _text.Length - endOfNoteIndex;
+
+          List<string> endOfTextRange = allTextList.GetRange(endOfNoteIndex, countLineOfEndRange);
+          finalText.AddRange(endOfTextRange);
+
+          return finalText.ToArray();
+     }
 }
