@@ -1,5 +1,7 @@
 ﻿using NoteEditorDomain;
 using NoteEditorWPF.Commands;
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
@@ -11,13 +13,15 @@ public class NoteEditedVM : ViewModelBase
      private NoteLogic _noteLogic;
      private string _editableNote;
      private string _filePath;
-     public NoteEditedVM(NoteLogic noteLogic, string filePath)
-     {
-          _noteLogic = noteLogic;
-          _editableNote = noteLogic.UF_OldNote;
-          _filePath = filePath;
-     }
-     public string EditableNote
+    private Action _onClose;
+    public NoteEditedVM(NoteLogic noteLogic, string filePath, Action onClose)
+    {
+        _noteLogic = noteLogic;
+        _editableNote = noteLogic.OldNote;
+        _filePath = filePath;
+        _onClose = onClose;
+    }
+    public string EditableNote
      {
           get { return _editableNote; }
           set
@@ -35,6 +39,6 @@ public class NoteEditedVM : ViewModelBase
      }
      public ICommand CancelButton
      {
-          get => new ExecuteCommand(obj => { Process.GetCurrentProcess().Kill(); });
+          get => new ExecuteCommand(obj => { _onClose(); });
      }
 }

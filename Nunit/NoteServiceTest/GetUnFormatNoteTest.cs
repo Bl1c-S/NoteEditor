@@ -12,7 +12,7 @@ public class GetUnFormatNoteTest
 
           string executeText = "1str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
 
@@ -26,7 +26,7 @@ public class GetUnFormatNoteTest
 
           string executeText = "1str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
@@ -39,7 +39,7 @@ public class GetUnFormatNoteTest
 
           string executeText = "1str\n2str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
@@ -52,9 +52,9 @@ public class GetUnFormatNoteTest
 
           string executeText = "1str\n2str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
-          Assert.AreEqual(executeText, noteLogic.UF_OldNote);
+          Assert.AreEqual(executeText, noteLogic.OldNote);
      }
 
      [TestMethod]
@@ -66,7 +66,7 @@ public class GetUnFormatNoteTest
 
           string executeText = "1str\n2str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
@@ -79,7 +79,7 @@ public class GetUnFormatNoteTest
 
           string executeText = "3str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
@@ -92,13 +92,26 @@ public class GetUnFormatNoteTest
 
           string executeText = "3str\n4str";
 
-          string actualText = noteLogic.UF_OldNote;
+          string actualText = noteLogic.OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
+    [TestMethod]
+    public void Test_Should_2str_When3note5str1()
+    {
+        string[] text = new string[] { "1str", "[1date", "", "4str", "+5str" };
+        int lineIndex = 2;
+        NoteLogic noteLogic = new(text, lineIndex);
+
+        string executeText = "3str\n4str";
+
+        string actualText = noteLogic.OldNote;
+
+        Assert.AreEqual(executeText, actualText);
+    }
 
 
-     [TestMethod]
+    [TestMethod]
      public void Test_ShouldExeption_WhenOutOfRange()
      {
           string[] text = new string[] { "1" };

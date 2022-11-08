@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoteEditorDomain;
+
+using NoteEditorWPF.ViewsModels;
+
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NoteEditor
 {
-     /// <summary>
-     /// Interaction logic for MainWindow.xaml
-     /// </summary>
-     public partial class MainWindow : Window
-     {
-          public MainWindow()
-          {
-               InitializeComponent();
-          }
-     }
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        public void Init()
+        {
+            string filePath = @"X:\TSNote692.txt";
+            int lineIndex = 19;
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"File {filePath} not found");
+                Close();
+                return;
+            }
+
+            string[] text = File.ReadAllLines(filePath);
+
+            DataContext = new NoteEditedVM(new NoteLogic(text, lineIndex), filePath, Close);
+        }
+
+    }
 }
