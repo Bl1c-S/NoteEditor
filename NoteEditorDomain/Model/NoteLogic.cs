@@ -3,72 +3,81 @@
 namespace NoteEditorDomain;
 public class NoteLogic
 {
-     private readonly char[] _endNoteAttribute;
-     private readonly int _lineIndex;
+     public readonly string UF_OldNote;
+
      private readonly string[] _text;
-     private readonly string _oldNote;
+     private readonly char[] _endNoteAttribute;
+     private readonly char? _startAttribute;
+
+     private readonly int _startIndex;
+     private readonly int _endIndex;
 
      public NoteLogic(string[] text, int lineIndex)
      {
           _endNoteAttribute = new char[] { '+', '-', '[' };
-          _lineIndex = lineIndex;
+          _startIndex = lineIndex;
           _text = text;
-          _oldNote = GetNote().TrimEnd('\n','\r');
+
+          var (oldNote, endIndex, startAttribute) = GetNote();
+          UF_OldNote = oldNote;
+          _endIndex = endIndex;
+          _startAttribute = startAttribute;
      }
 
-     public string GetUnFormatNote() => _oldNote.TrimStart(_endNoteAttribute);
+     private (string, int, char?) GetNote()
+     {
+          if (_startIndex >= _text.Length)
+               throw new ArgumentOutOfRangeException();
 
+          int endIndex = _startIndex + 1;
+          string startLine = _text[_startIndex];
+          StringBuilder sb = new(startLine);
+
+          char? startAttrubute = null;
+          if (_endNoteAttribute.Contains(startLine[0]))
+          startAttrubute = startLine[0];
+
+          for (; endIndex < _text.Length; ++endIndex)
+          {
+               string line = _text[endIndex];
+
+               if (_endNoteAttribute.Contains(line[0]))
+                    break;
+
+               sb.AppendLine($"\n{line}");
+          }
+
+          string ufNote = GetUnFormatNote(sb.ToString());
+          return (ufNote, endIndex, startAttrubute);
+     }
+
+     private string GetUnFormatNote(string note)
+     {
+          note = note.TrimEnd('\n', '\r');
+          return note.TrimStart(_endNoteAttribute);
+     }
      private List<string> GetFormatNote(string changedNote)
      {
-          StringBuilder sb;
-          if (_oldNote.StartsWith("+"))
-               sb = new($"+{changedNote}");
-          else if (_oldNote.StartsWith("-"))
-               sb = new($"-{changedNote}");
-          else
-               sb = new(changedNote);
+          string startFormatNote = _startAttribute + changedNote;
 
           List<string> formattedChangedNote = new();
 
-          foreach (string line in sb.ToString().Split("\n"))
+          foreach (string line in startFormatNote.Split("\n"))
                formattedChangedNote.Add(line.TrimEnd('\r'));
 
           return formattedChangedNote;
      }
 
-     private string GetNote()
-     {
-          if (_lineIndex >= _text.Length)
-               throw new ArgumentOutOfRangeException();
-
-          StringBuilder sb = new(_text[_lineIndex]);
-
-          for (int i = _lineIndex + 1; i < _text.Length; i++)
-          {
-               string line = _text[i];
-
-               foreach (var endchar in _endNoteAttribute)
-               {
-                    if (line.StartsWith(endchar))
-                         return sb.ToString();
-               }
-               sb.AppendLine($"\n{line}");
-          }
-          return sb.ToString();
-     }
-
      public string[] InsertInside(string changedNote)
      {
           List<string> allTextList = new(_text);
-          List<string> finalText = new(allTextList.GetRange(0, _lineIndex));
+          List<string> finalText = new(allTextList.GetRange(0, _startIndex));
 
           List<string> formattedChangedNote = GetFormatNote(changedNote);
           finalText.AddRange(formattedChangedNote);
 
-          int endOfNoteIndex = _lineIndex + _oldNote.Split("\n").Length;
-          int countLineOfEndRange = _text.Length - endOfNoteIndex;
-
-          List<string> endOfTextRange = allTextList.GetRange(endOfNoteIndex, countLineOfEndRange);
+          int countEndRange = _text.Length - _endIndex;
+          List<string> endOfTextRange = allTextList.GetRange(_endIndex, countEndRange);
           finalText.AddRange(endOfTextRange);
 
           return finalText.ToArray();

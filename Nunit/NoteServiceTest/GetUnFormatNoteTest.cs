@@ -4,51 +4,99 @@ namespace Nunit.NoteServiceTest;
 public class GetUnFormatNoteTest
 {
      [TestMethod]
-     public void Test_ShouldOneStr_When1str()
+     public void Test_Should_1str_When1note1strAttribute ()
      {
-          string[] text = new string[] { "1str" };
+          string[] text = new string[] { "+1str" };
           int lineIndex = 0;
-
           NoteLogic noteLogic = new(text, lineIndex);
 
-          Assert.AreEqual("1str", noteLogic.GetUnFormatNote());
+          string executeText = "1str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, actualText);
 
      }
      [TestMethod]
-     public void Test_ShouldTwoStr_When2str()
+     public void Test_Should_1str_When1note1str()
      {
-          string[] text = new string[] { "1str", "2str" };
+          string[] text = new string[] { "1str" };
           int lineIndex = 0;
-
           NoteLogic noteLogic = new(text, lineIndex);
 
-          string executeText = "1str\n2str";
+          string executeText = "1str";
 
-          string actualText = noteLogic.GetUnFormatNote();
+          string actualText = noteLogic.UF_OldNote;
 
           Assert.AreEqual(executeText, actualText);
      }
      [TestMethod]
-     public void Test_Should1Note2str_When2note()
+     public void Test_Should_2str_When1note2str()
      {
-          string[] text = new string[] { "1str", "2str", "+1str" };
+          string[] text = new string[] { "1str", "2str" };
           int lineIndex = 0;
-
           NoteLogic noteLogic = new(text, lineIndex);
 
-          Assert.AreEqual("1str\n2str", noteLogic.GetUnFormatNote());
+          string executeText = "1str\n2str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+     [TestMethod]
+     public void Test_Should_2str_When2note3str()
+     {
+          string[] text = new string[] { "1str", "2str", "+3str" };
+          int lineIndex = 0;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "1str\n2str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, noteLogic.UF_OldNote);
      }
 
      [TestMethod]
-     public void Test_Should1Note2str_When3note()
+     public void Test_Should_2str_When2note3strAttribute()
      {
-          string[] text = new string[] { "-1str", "2str", "+1str" };
+          string[] text = new string[] { "-1str", "2str", "+3str" };
           int lineIndex = 0;
-
           NoteLogic noteLogic = new(text, lineIndex);
 
-          Assert.AreEqual("1str\n2str", noteLogic.GetUnFormatNote());
+          string executeText = "1str\n2str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, actualText);
      }
+     [TestMethod]
+     public void Test_Should_1str_When3note5str()
+     {
+          string[] text = new string[] { "1str","-2str", "3str", "[1date", "4str" };
+          int lineIndex = 2;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "3str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+     [TestMethod]
+     public void Test_Should_2str_When3note5str()
+     {
+          string[] text = new string[] { "1str", "[1date", "3str", "4str", "+5str" };
+          int lineIndex = 2;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "3str\n4str";
+
+          string actualText = noteLogic.UF_OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+
 
      [TestMethod]
      public void Test_ShouldExeption_WhenOutOfRange()

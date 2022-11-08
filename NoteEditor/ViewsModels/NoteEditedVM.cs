@@ -14,7 +14,7 @@ public class NoteEditedVM : ViewModelBase
      public NoteEditedVM(NoteLogic noteLogic, string filePath)
      {
           _noteLogic = noteLogic;
-          _editableNote = noteLogic.GetUnFormatNote();
+          _editableNote = noteLogic.UF_OldNote;
           _filePath = filePath;
      }
      public string EditableNote
