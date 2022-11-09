@@ -97,21 +97,72 @@ public class GetUnFormatNoteTest
           Assert.AreEqual(executeText, actualText);
      }
     [TestMethod]
-    public void Test_Should_2str_When3note5str1()
+    public void Test_Should_EmptyStr_WhenInside()
     {
         string[] text = new string[] { "1str", "[1date", "", "4str", "+5str" };
         int lineIndex = 2;
         NoteLogic noteLogic = new(text, lineIndex);
 
-        string executeText = "3str\n4str";
+        string executeText = "\n4str";
 
         string actualText = noteLogic.OldNote;
 
         Assert.AreEqual(executeText, actualText);
     }
+     [TestMethod]
+     public void Test_Should_EmptyStr_WhenFirst()
+     {
+          string[] text = new string[] { "", "[1date", "2str", "4str", "+5str" };
+          int lineIndex = 0;
+          NoteLogic noteLogic = new(text, lineIndex);
 
+          string executeText = "";
 
-    [TestMethod]
+          string actualText = noteLogic.OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+     [TestMethod]
+     public void Test_Should_EmptyStr_End()
+     {
+          string[] text = new string[] { "1str", "[1date", "2str", "4str", "" };
+          int lineIndex = 4;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "";
+
+          string actualText = noteLogic.OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+     [TestMethod]
+     public void Test_Should_EmptyStr2_WhenInside()
+     {
+          string[] text = new string[] { "1str", "[1date", "", "", "+5str" };
+          int lineIndex = 2;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "\n";
+
+          string actualText = noteLogic.OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+     [TestMethod]
+     public void Test_Should_EmptyStr_WhenReadOll ()
+     {
+          string[] text = new string[] { "", "", "", "", "" };
+          int lineIndex = 0;
+          NoteLogic noteLogic = new(text, lineIndex);
+
+          string executeText = "\n\n\n\n\n";
+
+          string actualText = noteLogic.OldNote;
+
+          Assert.AreEqual(executeText, actualText);
+     }
+
+     [TestMethod]
      public void Test_ShouldExeption_WhenOutOfRange()
      {
           string[] text = new string[] { "1" };
